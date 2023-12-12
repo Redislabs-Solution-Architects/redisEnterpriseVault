@@ -17,6 +17,13 @@
     command: curl -v -k -u "{{lookup('file', '../../temp/cluster_un.txt')}}":"{{lookup('file', '../../temp/cluster_pw.txt')}}" -X POST https://localhost:9443/v1/roles -H Content-type:application/json  -d '{"name":"db2","management":"admin"}'
   register: curl_out2
 
+- name:
+  kubernetes.core.k8s_exec:
+    namespace: demo
+    pod: "{{rec_name}}-0"
+    command: curl -v -k -u "{{lookup('file', '../../temp/cluster_un.txt')}}":"{{lookup('file', '../../temp/cluster_pw.txt')}}" -X POST https://localhost:9443/v1/roles -H Content-type:application/json  -d '{"name":"DB Member","management":"admin"}'
+  register: curl_out3
+
 - name: wait to ensure gears module is recognized as installed
   pause:
     seconds: 6
